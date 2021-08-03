@@ -2,12 +2,14 @@ const passport = require('passport');
 const { ExtractJwt, Strategy } = require('passport-jwt');
 require('dotenv').config();
 const { user: service } = require('../services');
+
 const { SECRET_KEY } = process.env;
 const settings = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: SECRET_KEY,
 };
 const jwtStrategy = new Strategy(settings, async (payload, done) => {
+  console.log(payload);
   try {
     const user = await service.getUserById({ _id: payload.id });
     if (!user) {
