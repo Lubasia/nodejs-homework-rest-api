@@ -1,4 +1,5 @@
 const { User } = require('../model');
+const gravatar = require('gravatar');
 const getUserById = id => User.findById(id);
 
 const getOneUser = filter => {
@@ -6,11 +7,10 @@ const getOneUser = filter => {
 };
 
 const addUser = ({ email, password }) => {
-  const newUser = new User({ email });
+  const avatarUrl = gravatar.url(email);
+  const newUser = new User({ email, avatarUrl });
   newUser.setPassword(password);
   return newUser.save();
-  // const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-  // return User.create({email, password: hashPassword});
 };
 
 const updateUserById = (id, updateInfo) => {

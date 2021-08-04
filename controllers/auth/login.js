@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const { user: service } = require('../../services');
-console.log(service, 'servAuth');
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
