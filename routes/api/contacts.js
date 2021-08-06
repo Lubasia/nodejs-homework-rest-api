@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const { contacts: ctrl } = require('../../controllers');
-console.log(ctrl, 'routeContact');
 
 const { validateMiddleware } = require('../../middleware');
 const {
