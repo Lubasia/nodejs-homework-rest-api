@@ -1,4 +1,7 @@
+const { nanoid } = require('nanoid');
+
 const { user: service } = require('../../services');
+const { sendMail } = require('../../utils');
 
 const signup = async (req, res, next) => {
   const { email, password } = req.body;
@@ -12,11 +15,18 @@ const signup = async (req, res, next) => {
       });
       return;
     }
-    await service.addUser({ email, password });
+    const verificationToken = nanoid();
+    await service.addUser({ email, password, verificationToken });
+    const mail = {
+      to: email,
+      subject: 'Подтвердите свой email',
+      text: `<a href="https://mysite.com/api/v1/auth/verify/${verificationToken}">Нажмите для подтверждения email</a>`,
+    };
+    await sendMail(mail);
     res.status(201).json({
       status: 'success',
       code: 201,
-      message: 'success',
+      message: 'success signup. Verify email',
     });
   } catch (error) {
     next(error);
